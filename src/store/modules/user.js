@@ -29,7 +29,7 @@ const mutations = {
 }
 
 const actions = {
-  // user login
+  // 用户登录
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
@@ -44,21 +44,21 @@ const actions = {
     })
   },
 
-  // get user info
+  // 获取用户信息
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
         const { data } = response
 
         if (!data) {
-          reject('Verification failed, please Login again.')
+          reject('验证失败，请重新登录！')
         }
 
         const { roles, name, avatar, introduction } = data
 
-        // roles must be a non-empty array
+        // 角色必须是非空数组
         if (!roles || roles.length <= 0) {
-          reject('getInfo: roles must be a non-null array!')
+          reject('getInfo:角色必须是非空数组！')
         }
 
         commit('SET_ROLES', roles)
@@ -72,7 +72,7 @@ const actions = {
     })
   },
 
-  // user logout
+  // 用户退出登录
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
@@ -81,7 +81,7 @@ const actions = {
         removeToken()
         resetRouter()
 
-        // reset visited views and cached views
+        // 重置访问的视图和缓存的视图
         // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
         dispatch('tagsView/delAllViews', null, { root: true })
 
@@ -92,7 +92,7 @@ const actions = {
     })
   },
 
-  // remove token
+  // 移除token
   resetToken({ commit }) {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')
@@ -102,7 +102,7 @@ const actions = {
     })
   },
 
-  // dynamically modify permissions
+  // 动态修改权限
   async changeRoles({ commit, dispatch }, role) {
     const token = role + '-token'
 
@@ -113,12 +113,12 @@ const actions = {
 
     resetRouter()
 
-    // generate accessible routes map based on roles
+    // 基于角色生成可访问路由图
     const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
-    // dynamically add accessible routes
+    // 动态添加可访问路由
     router.addRoutes(accessRoutes)
 
-    // reset visited views and cached views
+    // 重置访问的视图和缓存的视图
     dispatch('tagsView/delAllViews', null, { root: true })
   }
 }
