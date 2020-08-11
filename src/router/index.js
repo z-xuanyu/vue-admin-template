@@ -13,7 +13,7 @@ import Layout from '@/layout'
  * hidden: true                   如果设置为true，则项目不会显示在边栏中（默认为false）如果设置为true，将始终显示根菜单
  * alwaysShow: true               如果未设置alwaysShow，则当项具有多个子路线时，
  *                                它将变为嵌套模式，否则不显示根菜单
- *                                
+ *
  * redirect: noRedirect           如果设置noRedirect，则不会在面包屑中重定向
  * name:'router-name'             该名称由<keep-alive>使用（必须设置！！！）
  * meta : {
@@ -148,6 +148,19 @@ export const asyncRoutes = [
         meta: { title: '轩钰博客', icon: 'link' }
       }
     ]
+  },
+  {
+    path: '/administrator',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'administrator',
+        component: () => import('@/views/administrator/index'),
+        meta: { title: '管理员', icon: 'user', roles: ['admin'] }
+      }
+    ]
+
   },
 
   // 404页必须放在最后！
